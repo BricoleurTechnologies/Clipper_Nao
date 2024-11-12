@@ -1,0 +1,123 @@
+<apex:component controller="WrapperForVfPage" access="global" allowDML="true" >
+  <div>Company Name:</div>
+
+    <div>WareHouse:{!wareHouse}</div>
+    <div>Stocktake ID:{!stocktakeObj.name}</div>
+    <div>startDate:{!startdate}</div>
+    <div>End Date:{!endDate}</div>
+    <div>Freeze Date:{!freezedate}</div>
+    <div>Owner:</div>
+    
+    
+   <apex:form >
+       <apex:pageBlock title="StockTake Results">
+             <table border="1px">
+                   <tr>
+                       <th>Warehouse Location</th>
+                       <th>Product</th>
+                       <th>Product Code</th>
+                       <th>Current Count</th>
+                       <th>Stocktake Count</th>
+                       <th>Notes</th>
+                   </tr>                    
+                <apex:repeat value="{!wareHouseLocationOBJ}" var="a" >
+                  <tr>
+                      <td>{! a.Warehouse_Location__c}</td> 
+                       <td>{! a.Product__r.name}</td>                       
+                       <td>{! a.Product__r.ProductCode}</td>
+                      <td>{! a.Product__r.name}</td> 
+                      <td>{! a.Product__r.name}</td> 
+                      <td>{! a.Product__r.name}</td> 
+                  </tr>
+               
+                </apex:repeat>
+            </table>
+       </apex:pageBlock>
+   </apex:form>
+
+
+    
+    
+   <!-- <apex:dataTable value="{!wareHouseLocationOBJ}" var="wareHouseLocation" headerClass="theHead" styleClass="tableClass" width="550px" rendered="{!wareHouseLocationOBJ.size!=0}">
+                <apex:column styleClass="col">
+                    <apex:facet name="header">Product</apex:facet>
+                    <apex:outputText >{!wareHouseLocationOBJ.Product__r.name}</apex:outputText>
+                </apex:column>       
+                <apex:column styleClass="col">
+                    <apex:facet name="header">Product Code</apex:facet>
+                    <apex:outputText >{!wareHouseLocationOBJ.Product__r.ProductCode}</apex:outputText>
+                </apex:column>  
+               <!-- <apex:column styleClass="col">
+                    <apex:facet name="header">Rate</apex:facet>
+                    <apex:outputText >{!wareHouseLocation.Rate}</apex:outputText>
+                </apex:column>  
+                <apex:column styleClass="col">
+                    <apex:facet name="header">Delineation</apex:facet>
+                    <apex:outputText >{!wareHouseLocation.DelType}</apex:outputText>
+                </apex:column>
+                <apex:column styleClass="col">
+                    <apex:facet name="header">From</apex:facet>
+                    <apex:outputText >{!wareHouseLocation.FromVal}</apex:outputText>
+                </apex:column>
+                <apex:column styleClass="col">
+                    <apex:facet name="header">To</apex:facet>
+                    <apex:outputText >{!wareHouseLocation.To}</apex:outputText>
+                </apex:column>
+                <apex:column styleClass="col">
+                    <apex:facet name="header">Delineation Value</apex:facet>
+                    <apex:outputText >{!wareHouseLocation.DelVal1}</apex:outputText>
+                </apex:column>
+                <apex:column styleClass="col">
+                    <apex:facet name="header">Product Type</apex:facet>
+                    <apex:outputText >{!wareHouseLocation.ProdType}</apex:outputText>
+                </apex:column>
+                <apex:column styleClass="col">
+                    <apex:facet name="header">Message</apex:facet>
+                    <apex:outputText >{!wareHouseLocation.Message}</apex:outputText>
+                </apex:column> 
+            </apex:dataTable>  -->
+
+
+
+             <!--- 
+    
+    
+    <html>
+        <style>
+            table, th, td {
+            border:1px solid black;
+            }
+        </style>
+        <body>
+            
+
+            
+            
+            <table style="width:100%">
+                <tr>
+                    <th>Warehouse Location</th>
+                    <th>Product</th>
+                    <th>Product Code</th>
+                    <th>Current Count</th>
+                    <th>Stocktake Count</th>
+                    <th>Notes</th>
+                </tr>
+                <apex:repeat var="key" value="{!wrapperToSentToVFPafe.locationProductsList}" >
+                   <tr>
+                    <td>"{!key.Warehouse_Location__c}"</td>
+                    <td>"{!key.Product__r.name}"</td>
+                    <td>"{!key.Product__r.ProductCode}"</td>
+          
+                </tr>
+                
+                </apex:repeat> 
+                
+             
+              
+            </table>
+  
+            
+        </body>
+    </html>  --->
+    
+</apex:component>

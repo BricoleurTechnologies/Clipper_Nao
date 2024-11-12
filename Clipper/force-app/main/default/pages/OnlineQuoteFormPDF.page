@@ -1,0 +1,219 @@
+<!-- 
+    Bricoleur Technologies - John Paulo M. Sulit (jp@bricoleurtech.com)
+    Created Date: Oct 27, 2023
+    Description: Online Quote Form PDF for Cleanmade
+    History: Oct 27, 2023 - Created
+ -->
+ <apex:page controller="OnlineQuoteFormController_Bric" renderAs="pdf" standardStylesheets="false" showHeader="false" sidebar="false" applyBodyTag="false" applyHtmlTag="false">
+    <html>
+        <head>
+            <title>Online Quote Form</title>
+            <style>
+                @page {
+                    size: a4;
+                    margin: 10mm;
+                    @bottom-center {
+                        font-size: 10px;
+                        font-family: Arial Unicode MS;
+                        content: "Page " counter(page) " of " counter(pages);
+                    }
+                }
+                .page-break {
+                    display:block;
+                    page-break-before: always;
+                }
+                .page-break-avoid {
+                    page-break-after: avoid;
+                }
+                body {
+                    font-family: sans-serif;
+                    font-size: 13px; 
+                }
+                .thCss {
+                    background-color: #dddddd;
+                    padding:5px;
+                    font-weight: bold;
+                    height:10px;
+                }
+                td.removeBorder {
+                    border-bottom-style: none;
+                    border-top-style: none;
+                    border-right-style: none;
+                    border-left-style: none;
+                }
+                .cleared {
+                    clear: both;
+                }
+                .quoteDescCss {
+                    font-size: 11px;
+                }
+            </style>
+        </head>
+        <body>
+            <apex:form id="onlineQuoteForm">
+                <div>
+                    <div style="float:left; width:50%;">
+                        <apex:image value="{!$Resource.OnlineQuoteFormLogo_Bric}" height="80" width="80"/>
+                        <div style="margin-top:5%;">
+                            <div style="float:left; width:30%;">
+                                <strong>Customer:</strong>
+                            </div>
+                            <div style="float:left; width:70%;">
+                                <table>
+                                    <tr>
+                                        <td>{!opp.Account.Name}</td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td>{!opp.Account.LastName}</td>
+                                    </tr> 
+                                    <tr>
+                                        <td>{!opp.Account.Business_Name_Bric__c}</td>
+                                    </tr> -->
+                                    <tr>
+                                        <td><br/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{!opp.Job_Address_Bric__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            {!opp.Job_Suburb_Bric__c},&nbsp;{!opp.Job_State_Bric__c},&nbsp;{!opp.Job_Post_Code_Bric__c}
+                                        </td>
+                                    </tr>
+                                    <!-- <tr>
+                                        <td>{!opp.Job_Suburb_Bric__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{!opp.Job_State_Bric__c}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{!opp.Job_Post_Code_Bric__c}</td>
+                                    </tr> -->
+                                    <!-- <tr>
+                                        <td>{!opp.Account.Phone}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>{!opp.Account.PersonMobilePhone}</td>
+                                    </tr> -->
+                                    <tr>
+                                        <td>
+                                            <br/>
+                                            <!--<apex:outputText value="{!IF(opp.Account.Phone != null, opp.Account.Phone, opp.Account.PersonMobilePhone)}"/>-->
+					    
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><br/></td>
+                                    </tr>
+                                    <tr>
+                                        <td>{!opp.Account.Email__c}</td>
+                                    </tr>
+                                </table>
+                                <br/>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="float:right; width:50%;">
+                        <div style="padding-left:35%;">
+                            <h1 id="quoteH1" style="margin-bottom:0;padding:bottom:0;color:#8C52FF;
+                            font-weight: bold;">QUOTE</h1><br/>
+                            <span style="color:#8C52FF; font-weight: bold;">Quote#: {!opp.Quote_Number_Bric__c}</span><br/>
+                            <span style="color:#8C52FF; font-weight: bold;"> Date: 
+                                <apex:outputText value="{0, date, dd'-'MM'-'yyyy}">
+                                    <apex:param value="{!TODAY()}" />
+                                </apex:outputText>
+                            </span><br/><br/>
+                            <!--<span style="color:#8C52FF; font-weight: bold;">
+                                Opp ID: {!opp.Opp_ID_Bric__c}
+                            </span>-->
+                            <apex:outputPanel rendered="{!opp.Digital_Quote_Accepted_Bric__c == 'Yes'}">
+                                <br/><br/><br/><br/>
+                                <div style="color: red; font-weight: bold;">
+                                    <span>QUOTE APPROVED</span><br/>
+                                    <span>
+                                        Date: 
+                                        <!--<apex:outputText value="{0, date, dd'/'MM'/'yyyy}">
+                                            <apex:param value="{!opp.Client_Accepted_Bric__c}" /> 
+                                        </apex:outputText>-->
+                                    </span><br/>
+                                    <span>
+                                        Time: {!acceptedTimeStr}
+                                    </span>
+                                </div>
+                            </apex:outputPanel>
+                        </div>
+                    </div>
+                </div>
+                <div class="cleared">
+                    <br/>
+                    <table style="border:none; border-collapse:collapse; width: 100%;">
+                        <tr>
+                            <td class="thCss">Description</td>
+                            <td class="thCss" style="text-align:right;">Quantity</td>
+                            <td class="thCss" style="text-align:right;">Unit Price</td>
+                            <td class="thCss" style="text-align:right;">Total Inc. GST</td>
+                        </tr>
+                        <apex:repeat value="{!opp.OpportunityLineItems}" var="oli">
+                            <tr>
+                                <td style="width:48%; padding:7px; text-align: justify;">
+                                    <strong><span style="text-align:left;">{!oli.Product2.Name}</span></strong><br/>
+                                    <span class="quoteDescCss">{!oli.Quote_Description_Long_Bric__c}</span>
+                                </td>
+                                <td style="width:13%; padding:7px; text-align:right;">
+                                    <span>{!oli.Quantity}</span>
+                                </td>
+                                <td style="width:13%; padding:7px; text-align:right;">
+                                    ${!oli.UnitPrice}
+                                </td>
+                                <td style="width:13%; padding:7px; text-align:right;">
+                                    ${!oli.TotalPrice}
+                                </td>
+                            </tr>
+                        </apex:repeat>
+                    </table>
+                    <hr style="border-top: 3px dotted;"/>
+                </div>
+                <div class="cleared">
+                    <br/>
+                    <table style="margin-left:auto;margin-right:auto; width:100%;">
+                        <tr>
+                            <td style="text-align: center; width:55%;">
+                                <i>
+                                    "This Contract/Invoice is protected by the Building and Construction
+                                    Industry Security of Payment ACT 2002"
+                                    <br/><br/>
+                                    <strong>
+                                        <a href="#" style="color:#8C52FF;" data-toggle="modal" data-target="#tcModal" data-dismiss="modal">
+                                            OUR FAIR GO POLICY APPLIES ON ALL QUOTES
+                                        </a>
+                                    </strong>
+                                </i>
+                            </td>
+                            <td style="width:10%;"></td>
+                            <td style="width:35%;">
+                                <table style="width:100%;">
+                                    <!--<tr>
+                                        <td style="text-align:right; width:40%;">GST</td>
+                                        <td style="width:33%;"></td>
+                                        <td style="text-align:right; width:30%;">${!opp.GST_Bric__c}</td>
+                                    </tr>-->
+                                    <tr><td><br/></td></tr>
+                                    <tr>
+                                        <td style="text-align:right; width:40%;"><strong>Total (incl. GST)</strong></td>
+                                        <!--<td style="width:33%;"></td>-->
+                                        <td style="text-align:right; width:30%;"><strong>${!opp.Amount}</strong></td>
+                                    </tr>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                    <div style="float:right; margin-top:5%;">
+                        <!-- <i><strong>Customer Name:</strong></i><br/>
+                        {!opp.Account.Business_Name_Bric__c}<br/> -->
+                        <i><strong>Terms: Strictly payment on completion in full</strong></i>
+                    </div>
+                </div>
+            </apex:form>
+        </body>
+    </html>
+</apex:page>

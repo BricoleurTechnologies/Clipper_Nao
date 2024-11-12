@@ -1,0 +1,301 @@
+<apex:page controller="SalesOrderPdfController" renderAs="pdf" showHeader="false" applyBodyTag="false">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <style>
+            @page {
+                margin: 20mm;
+                @bottom-center {
+                    font-family: arial, sans-serif;
+                    font-size: 12px;
+                    content: "Page " counter(page) " of " counter(pages);
+                }
+            }
+            body {
+                font-family: arial, sans-serif;
+                font-size: 12px;
+                margin: 0;
+                padding: 0;
+            }
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+                page-break-inside: auto; /* Avoid page breaks inside tables */
+            }
+            th, td {
+                border-collapse: collapse;
+                padding: 5px;
+            }
+            .leftAlign {
+                text-align: left;
+                padding-left: 5px;
+            }
+            .rightAlign {
+                text-align: right;
+                padding-right: 5px;
+            }
+            .centerAlign {
+                text-align: center;
+            }
+            .border {
+                border: 1px solid;
+            }
+            .tableLayoutFixed {
+                table-layout: fixed;
+            }
+            .tdHeaderWidth {
+                width: 50%;
+            }
+            .removeBreak {
+                display: inline;
+            }
+            .tableMarginTop {
+                margin-top: 1.5%;
+            }
+            .cellVerticalAlign {
+                vertical-align: top;
+            }
+            .cellPaddingTd {
+                padding: 8px;
+                vertical-align: center;
+            }
+            .grayCellBg {
+                background-color: #e8e4e4;
+            }
+            .fontSize10 {
+                font-size: 10px;
+            }
+            hr {
+                box-shadow: none;
+                border: none;
+                height: 1px; 
+                background-color: #ccc;
+            }
+        </style>
+    </head>
+    <body>
+        <apex:variable var="pageNum" value="{!0}"/>
+        <apex:repeat value="{!recordList}" var="record">
+            <div class="{!if(pageNum == 0,'page-break-avoid','page-break')}">
+                <table class="tableLayoutFixed">
+                    <tr>
+                        <td class="tdHeaderWidth leftAlign">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <br/>
+                                        <apex:image value="{!URLFOR($Resource.DocGen_SalesOrderPDF)}"/>
+                                    </td>
+                                    <td style="padding-left:10px;" class="fontSize10">
+                                        Hanna Instruments Pty Ltd.<br/>
+                                        18 Fiveways Boulevarde<br/>
+                                        Keysborough VIC 3173<br/>
+                                        ABN: 97 003 417 990
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="tdHeaderWidth rightAlign">
+                            <h1>Sales Order</h1>
+                            <h3 class="removeBreak">{!record.OrderNumber}</h3><br/>
+                            <span>5-Jul-2024</span>
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th class="cellVerticalAlign" style="width:30%;">
+                            <b>Bill To</b><br/>
+                        </th>
+                        <th class="cellVerticalAlign" style="width:30%;">
+                            <b>Ship To</b><br/>
+                        </th>
+                        <th class="cellVerticalAlign grayCellBg" style="width:40%;">
+                            <span style="font-size:20px;"><b>TOTAL</b></span><br/>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            Ecolab Pty Ltd T/A Nalco Australia<br/>
+                            Attn: Accounts Payable<br/>
+                            2 Drake Avenue<br/>
+                            MACQUARIE PARK NSW 2113<br/>
+                            Australia
+                        </td>
+                        <td>
+                            NALCO AUSTRALIA PTY LTD c/o<br/>
+                            Pack &amp; Send Systems PTY LTD<br/>
+                            1395 Botany Road<br/>
+                            BOTANY NSW 2019<br/>
+                            Australia
+                        </td>
+                        <td class="grayCellBg rightAlign">
+                            <br/><br/>
+                            <span style="font-size:25px;">$149.44</span>
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Terms
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            PO #
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Customer Phone
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Customer Email
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Shipping Method
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Account No
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Sales Rep
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="cellPaddingTd fontSize10">
+                            Terms
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            {!record.PoNumber}
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            Customer Phone
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            Customer Email
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            Shipping Method
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            Account No
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            Sales Rep
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th class="grayCellBg cellPaddingTd fontSize10" style="width:5%;">
+                            
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Item
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10" style="width:40%;">
+                            Description
+                        </th>
+                        <th class="centerAlign grayCellBg cellPaddingTd fontSize10">
+                            Quantity
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            MSRP
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Adjustments
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Amount
+                        </th>
+                    </tr>
+                    <apex:variable var="itemNum" value="{!1}"/> 
+                    <!--<apex:repeat value="{!record.OrderItems}" var="oi">   
+                        <tr>
+                            <td class="cellPaddingTd fontSize10" style="text-align:center;">
+                                {!itemNum}
+                            </td>
+                            <td class="cellPaddingTd fontSize10">
+                                {!oi.Product_Code__c}
+                            </td>
+                            <td class="cellPaddingTd fontSize10">
+                                {!oi.Product_Name__c}
+                            </td>
+                            <td class="centerAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, 0}">
+                                    <apex:param value="{!oi.Quantity}" />
+                                </apex:outputText>
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, currency}">
+                                    <apex:param value="{!oi.ListPrice}"/>
+                                </apex:outputText>                                   
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, currency}">
+                                    <apex:param value="{!oi.TotalPrice}"/>
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <apex:variable var="itemNum" value="{!itemNum + 1}"/> 
+                    </apex:repeat>-->
+                </table>
+                <hr/>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <td class="tdHeaderWidth cellVerticalAlign" style="font-size:8.2px;">
+                            Please include your order # as a reference on the deposit to ensure correct processing.<br/>
+                            Deposits without a sales order # as a reference will cause a delay in processing your order.<br/>
+                            If you wish to pay by direct deposit, please email your remittance to sales@hannainst.com.au.
+                        </td>
+                        <td class="tdHeaderWidth rightAlign">
+                            <table class="tableLayoutFixed">
+                                <tr>
+                                    <th class="cellPaddingTd">
+                                        Subtotal
+                                    </th>
+                                    <td class="cellPaddingTd">
+                                        $115.25
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="cellPaddingTd">
+                                        Order Discount
+                                    </th>
+                                    <td class="cellPaddingTd">
+                                        $115.25
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="cellPaddingTd">
+                                        Freight
+                                    </th>
+                                    <td class="cellPaddingTd">
+                                        $115.25
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="cellPaddingTd">
+                                        GST
+                                    </th>
+                                    <td class="cellPaddingTd">
+                                        $115.25
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="grayCellBg cellPaddingTd">
+                                        Total
+                                    </th>
+                                    <td class="grayCellBg cellPaddingTd">
+                                        $115.25
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </apex:repeat>
+    </body>
+</apex:page>

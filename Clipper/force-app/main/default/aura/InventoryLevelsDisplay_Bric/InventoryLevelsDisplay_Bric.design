@@ -1,0 +1,5 @@
+<design:component label="Inventory Levels Display Table Component">
+	
+    <design:attribute name="data" label="Object List"/>
+    
+</design:component>

@@ -1,0 +1,38 @@
+<apex:page id="mainPage" standardController="Location" recordSetVar="o" extensions="WrapperForVfPage" docType="html-5.0" showHeader="false" applyBodyTag="false" >
+
+    <div>Company Name:{!companyName}</div>
+    <br />
+    <div>WareHouse:{!wareHouse}</div>
+    <div>Stocktake ID:{!stocktakeObj.name}</div>
+    <div>startDate:{!startdate}</div>
+    <div>End Date:{!endDate}</div>
+    <div>Freeze Date:{!freezedate}</div>
+    <div>Owner:{!owner}</div>
+    
+    
+   <apex:form >
+       <apex:pageBlock title="StockTake Results">
+             <table border="1px">
+                   <tr>
+                       <th>Warehouse Location</th>
+                       <th>Product</th>
+                       <th>Product Code</th>
+                       <th>Current Count</th>
+                       <th>Stocktake Count</th>
+                       <th>Notes</th>
+                   </tr>                    
+                <apex:repeat value="{!wareHouseLocationOBJ}" var="a" >
+                  <tr>
+                      <td>{! a.Warehouse_Location__c}</td> 
+                       <td>{! a.Product__r.name}</td>                       
+                       <td>{! a.Product__r.ProductCode}</td>
+                      <td>{! a.In_Stock__c}</td> 
+                      <td></td> 
+                      <td></td> 
+                  </tr>
+               
+                </apex:repeat>
+            </table>
+       </apex:pageBlock>
+   </apex:form>
+</apex:page>

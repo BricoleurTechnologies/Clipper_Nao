@@ -1,0 +1,5 @@
+<aura:component implements="force:lightningQuickAction" controller="XeroGetItemBatchSchedulable">
+    
+    <aura:handler value="{!this}" name="init" action="{!c.doInit}"/>
+	
+</aura:component>

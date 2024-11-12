@@ -1,0 +1,20 @@
+<aura:component implements="lightning:availableForFlowScreens" access="global" >
+	
+    
+    <!-- attributes -->
+    <aura:attribute name="data" type="Inventory_Level__c[]"/>
+    <aura:attribute name="columnsList" type="List"/>
+    
+    <!-- handlers-->
+    <aura:handler name="init" value="{! this }" action="{! c.init }"/>
+    
+    <!-- the container element determine the height of the datatable -->
+    <div style="height: 300px">
+        <lightning:datatable
+                             keyField="id"
+                             data="{! v.data }"
+                             columns="{! v.columnsList }"
+                             hideCheckboxColumn="true"/>
+    </div>
+    
+</aura:component>

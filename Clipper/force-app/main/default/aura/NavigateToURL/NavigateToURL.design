@@ -1,0 +1,4 @@
+<design:component>
+	
+    <design:attribute name="URL" label="URL" default=""/>
+</design:component>

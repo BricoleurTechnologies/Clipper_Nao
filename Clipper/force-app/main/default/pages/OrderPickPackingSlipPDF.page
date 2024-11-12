@@ -1,0 +1,251 @@
+<apex:page controller="OrderPickPdfController" renderAs="pdf" showHeader="false" applyBodyTag="false">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <style>
+            @page {
+                margin-bottom: 30mm;
+                @bottom-center {
+                    font-family: arial, sans-serif;
+                    font-size: 9px;
+                    width:50%;
+                    content: "Page " counter(page) " of " counter(pages);
+                }
+            }
+            body {
+                font-family: arial, sans-serif;
+                font-size: 12px;
+                margin: 0;
+                padding: 0;
+            }
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+                page-break-inside: auto; /* Avoid page breaks inside tables */
+            }
+            th, td {
+                border-collapse: collapse;
+                padding: 5px;
+            }
+            .leftAlign {
+                text-align: left;
+                padding-left: 5px;
+            }
+            .rightAlign {
+                text-align: right;
+                padding-right: 5px;
+            }
+            .centerAlign {
+                text-align: center;
+            }
+            .border {
+                border: 1px solid black;
+            }
+            .tableLayoutFixed {
+                table-layout: fixed;
+            }
+            .tdHeaderWidth {
+                width: 50%;
+            }
+            .removeBreak {
+                display: inline;
+            }
+            .tableMarginTop {
+                margin-top: 1.5%;
+            }
+            .cellVerticalAlign {
+                vertical-align: top;
+            }
+            .cellPaddingTd {
+                padding: 8px;
+                vertical-align: center;
+            }
+            .grayCellBg {
+                background-color: #e8e4e4;
+            }
+            .fontSize10 {
+                font-size: 10px;
+            }
+            hr {
+                box-shadow: none;
+                border: none;
+                height: 1px; 
+                background-color: #ccc;
+            }
+            .removeTablePadding {
+                padding: 0;
+                margin: 0;
+            }
+            .tdBorders {
+                border-left: 1px solid black;
+                border-right: 1px solid black;
+                border-bottom: 1px solid black; 
+            }
+            .tdBorderTopNone {
+                border-top: none; 
+            }
+            .tdBorderBottomNone {
+                border-bottom: none; 
+            }
+        </style>
+    </head>
+    <body>
+        <apex:variable var="pageNum" value="{!0}"/>
+        <apex:repeat value="{!recordList}" var="record">
+            <div class="{!if(pageNum == 0,'page-break-avoid','page-break')}">
+                <table class="tableLayoutFixed">
+                    <tr>
+                        <td class="tdHeaderWidth leftAlign">
+                            <apex:image value="{!logoUrl}" height="80" width="150"/><br/>
+                            18 Fiveways Boulevarde<br/>
+                            Keysborough VIC 3137<br/>
+                            Australia
+                        </td>
+                        <td class="tdHeaderWidth rightAlign cellVerticalAlign">
+                            <h1>Packing Slip</h1>
+                            <table style="width:65%; float:right;">
+                                <tr>
+                                    <th class="removeTablePadding" style="width:30%;">Order Date</th>
+                                    <td class="removeTablePadding" style="width:30%;">date here</td>
+                                </tr>
+                                <tr>
+                                    <th class="removeTablePadding">Order #</th>
+                                    <td class="removeTablePadding">{record.OrderNumber}</td>
+                                </tr>
+                                <tr><td></td></tr>
+                                <tr>
+                                    <th class="removeTablePadding">Ship Date</th>
+                                    <td class="removeTablePadding">date here</td>
+                                </tr>
+                                <tr>
+                                    <th class="removeTablePadding">Tracking #</th>
+                                    <td class="removeTablePadding">date here</td>
+                                </tr>
+                                <tr>
+                                    <th class="removeTablePadding">Ship Via</th>
+                                    <td class="removeTablePadding">date here</td>
+                                </tr>
+                                <tr>
+                                    <th class="removeTablePadding">PO #</th>
+                                    <td class="removeTablePadding">date here</td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th style="width:50%;">
+                            <b>Ship To</b><br/>
+                        </th>
+                        <th class="cellVerticalAlign" style="width:50%;">
+                            <b>Ship Details</b><br/>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td style="vertical-align:bottom; width:50%;">
+                            <!--{!record.AccountId}<br/>
+                            Attn: {!record.BillToContactId}<br/>
+                            {!record.BillingStreet}<br/>
+                            billing city billingstate billing country<br/>
+                            billing country-->
+                            Hanna Instruments SRL<br/>
+                            457260 Nusfalau, Str. Hanna<br/>
+                            Judetal Salaj<br/>
+                            Romania
+                        </td>
+                        <td style="font-weight: bold; width:50%;">
+                            Ship Info<br/>
+                            RO SAFT MOVEMENT<br/>
+                            Accounting Period E...<br/>
+                            Accounting Period St...
+                        </td>
+                    </tr>
+                </table>
+                <table style="border-left: 1px solid black; border-right: 1px solid black; border-bottom: 1px solid black;" class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th style="border: 1px solid black;" class="centerAlign cellPaddingTd fontSize10">
+                            Item
+                        </th>
+                        <th style="border: 1px solid black; width:40%;" class="centerAlign cellPaddingTd fontSize10">
+                            Description
+                        </th>
+                        <th style="border: 1px solid black;" class="centerAlign cellPaddingTd fontSize10">
+                            Ordered
+                        </th>
+                        <th style="border: 1px solid black;" class="centerAlign cellPaddingTd rightAlign fontSize10">
+                            Units
+                        </th>
+                        <th style="border: 1px solid black;" class="centerAlign cellPaddingTd rightAlign fontSize10">
+                            Back Ord
+                        </th>
+                        <th style="border: 1px solid black;" class="centerAlign cellPaddingTd rightAlign fontSize10">
+                            Shipped
+                        </th>
+                    </tr>
+                    <apex:variable var="itemNum" value="{!1}"/> 
+                    <apex:repeat value="{!record.Order_Pick_Lines__r}" var="opl">   
+                        <tr>
+                            <td class="{!IF(itemNum != record.Order_Pick_Lines__r.size, 'tdBorderTopNone tdBorderBottomNone', '')} tdBorders cellPaddingTd fontSize10">
+                                {oi.Product_Code__c}
+                            </td>
+                            <td class="{!IF(itemNum != record.Order_Pick_Lines__r.size, 'tdBorderTopNone tdBorderBottomNone', '')} tdBorders cellPaddingTd fontSize10">
+                                {oi.Product_Name__c}
+                            </td>
+                            <td class="{!IF(itemNum != record.Order_Pick_Lines__r.size, 'tdBorderTopNone tdBorderBottomNone', '')} tdBorders rightAlign cellPaddingTd fontSize10">
+                                <!--<apex:outputText value="{0, number, 0}">
+                                    <apex:param value="{!oi.Quantity}" />
+                                </apex:outputText>-->
+                            </td>
+                            <td class="{!IF(itemNum != record.Order_Pick_Lines__r.size, 'tdBorderTopNone tdBorderBottomNone', '')} tdBorders rightAlign cellPaddingTd fontSize10">                                  
+                            </td>
+                            <td class="{!IF(itemNum != record.Order_Pick_Lines__r.size, 'tdBorderTopNone tdBorderBottomNone', '')} tdBorders rightAlign cellPaddingTd fontSize10">
+                                
+                            </td>
+                            <td class="{!IF(itemNum != record.Order_Pick_Lines__r.size, 'tdBorderTopNone tdBorderBottomNone', '')} tdBorders rightAlign cellPaddingTd fontSize10">
+
+                            </td>
+                        </tr>
+                        <apex:variable var="itemNum" value="{!itemNum + 1}"/> 
+                    </apex:repeat>
+                </table>
+                <!--<table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <td class="tdHeaderWidth cellVerticalAlign">
+                           
+                        </td>
+                        <td class="tdHeaderWidth rightAlign">
+                            <table class="tableLayoutFixed">
+                                <tr>
+                                    <th class="grayCellBg cellPaddingTd">
+                                        Total
+                                    </th>
+                                    <td class="grayCellBg cellPaddingTd">
+                                        $115.25
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>-->
+                <br/>
+                <!--<table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <td style="width:30%;"><b>Authorized Purchasing Agent&nbsp;&nbsp;</b></td>
+                        <td><hr style="margin-top:4%; color: black;"/></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;" colspan="2">
+                            <span>ORDERS OVER $10,000 WITHOUT AUTHORIZED SIGNATURE ARE NOT VALID</span>
+                        </td>
+                    </tr>
+                </table>-->
+                <div>
+           			 <apex:image height="30" value="https://bwipjs-api.metafloor.com/?bcid=code128&amp;text={record.OrderNumber}&amp;scaleX=2&amp;scaleY=0.5&amp;rotate=N&amp;includetext&amp;backgroundcolor=ffffff"/>
+       			 </div>
+            </div>
+            
+        </apex:repeat>
+        
+    </body>
+</apex:page>

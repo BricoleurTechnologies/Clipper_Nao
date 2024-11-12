@@ -1,0 +1,16 @@
+<apex:page >
+  <h1>
+  Outputlink Tag:
+  <br/>
+  <apex:outputLink value="file:///c:/test/">file:///c:/test/</apex:outputLink>
+  <br/>
+  <apex:outputLink value="file://c:/">file://c:/</apex:outputLink>
+  <br/>
+  <br/>
+  HTML Hyperlink Tag:
+  <br/>
+  <a href="file:///c:/test/">file:///c:/test/</a>
+  <br/>
+  <a href="file://c:/">file://c:/</a>
+  </h1>
+</apex:page>

@@ -1,0 +1,303 @@
+<apex:page controller="OrderPdfController" renderAs="pdf" showHeader="false" applyBodyTag="false">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <style>
+            @page {
+                margin: 20mm;
+                @bottom-left {
+                    font-family: arial, sans-serif;
+                    font-size: 9px;
+                    width:50%;
+                    white-space: pre-wrap;
+                    content: "1) Please acknowledge receipt of P.O. and confirm delivery by return fax or letter.\A 2) We reserve the right to terminate the purchase order without liability if goods are not received within 2 weeks from date of delivery specified on purchase order.\A 3) Any quantities exceeding those on the purchase order will be returned at the supplier's expense.";
+                }
+                @bottom-right {
+                    font-family: arial, sans-serif;
+                    font-size: 9px;
+                    width:50%;
+                    content: "Page " counter(page) " of " counter(pages);
+                }
+            }
+            body {
+                font-family: arial, sans-serif;
+                font-size: 12px;
+                margin: 0;
+                padding: 0;
+            }
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+                page-break-inside: auto; /* Avoid page breaks inside tables */
+            }
+            th, td {
+                border-collapse: collapse;
+                padding: 5px;
+            }
+            .leftAlign {
+                text-align: left;
+                padding-left: 5px;
+            }
+            .rightAlign {
+                text-align: right;
+                padding-right: 5px;
+            }
+            .centerAlign {
+                text-align: center;
+            }
+            .border {
+                border: 1px solid;
+            }
+            .tableLayoutFixed {
+                table-layout: fixed;
+            }
+            .tdHeaderWidth {
+                width: 50%;
+            }
+            .removeBreak {
+                display: inline;
+            }
+            .tableMarginTop {
+                margin-top: 1.5%;
+            }
+            .cellVerticalAlign {
+                vertical-align: top;
+            }
+            .cellPaddingTd {
+                padding: 8px;
+                vertical-align: center;
+            }
+            .grayCellBg {
+                background-color: #e8e4e4;
+            }
+            .fontSize10 {
+                font-size: 10px;
+            }
+            hr {
+                box-shadow: none;
+                border: none;
+                height: 1px; 
+                background-color: #ccc;
+            }
+            .removeTablePadding {
+                padding: 0;
+                margin: 0;
+            }
+        </style>
+    </head>
+    <body>
+        <apex:variable var="pageNum" value="{!0}"/>
+        <apex:repeat value="{!recordList}" var="record">
+            <div class="{!if(pageNum == 0,'page-break-avoid','page-break')}">
+                <table class="tableLayoutFixed">
+                    <tr>
+                        <td class="tdHeaderWidth leftAlign">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <br/>
+                                        <!--<apex:image value="{!URLFOR($Resource.DocGen_SalesOrderPDF)}"/>-->
+                                        <apex:image value="{!logoUrl}" height="50" width="130"/>
+                                    </td>
+                                    <td style="padding-left:10px;" class="fontSize10">
+                                        Hanna Instruments Pty Ltd.<br/>
+                                        18 Fiveways Boulevarde<br/>
+                                        Keysborough VIC 3173<br/>
+                                        ABN: 97 003 417 990
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="tdHeaderWidth rightAlign">
+                            <h1>Purchase Order</h1>
+                            <h3 class="removeBreak">{!record.OrderNumber}</h3><br/>
+                            <apex:outputText value="{0, date, d MMMM yyyy}">
+                                <apex:param value="{!record.ActivatedDate}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th class="cellVerticalAlign" style="width:50%;">
+                            <b>Vendor</b><br/>
+                        </th>
+                        <th class="cellVerticalAlign grayCellBg" style="width:50%;">
+                            <b>Ship To</b><br/>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="cellVerticalAlign">
+                            <!--{!record.AccountId}<br/>
+                            Attn: {!record.BillToContactId}<br/>
+                            {!record.BillingStreet}<br/>
+                            billing city billingstate billing country<br/>
+                            billing country-->
+                            Hanna Instruments SRL<br/>
+                            457260 Nusfalau, Str. Hanna<br/>
+                            Judetal Salaj<br/>
+                            Romania
+                        </td>
+                        <td class="grayCellBg" style="font-weight: bold;">
+                            Hanna Instruments Australia<br/>
+                            18 Fiveways Boulevarde<br/>
+                            Keysborough VIC 3173<br/>
+                            Australia<br/>
+                            
+                            <table style="margin-top: 8px; margin-bottom: 8px;" cellpadding="0">
+                                <tr>
+                                    <td class="cellVerticalAlign removeTablePadding">
+                                        Attn: FG Order<br/>
+                                        Intercompany<br/>
+                                        Ship-to Email:<br/>
+                                    </td>
+                                    <td class="cellVerticalAlign removeTablePadding">
+                                        Department: FG Sales -
+                                    </td>
+                                </tr>
+                            </table>
+
+                            <span style="font-size: 9px;">
+                                Important: <br/>
+                                1. Mark all Invoices and delivery orders with purchase order number.<br/>
+                                2. Invoice each order separately to <a href="mailto:accountspayable@Hannainst.com">accountspayable@Hannainst.com</a><br/>
+                                3. Do not deliver in advance of schedule unless authorized in writing.
+                            </span>
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Account #
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Terms
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Received By
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Shipping Method
+                        </th>
+                    </tr>
+                    <tr>
+                        <td class="cellPaddingTd fontSize10">
+                            leave for now
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            {!record.PoNumber}
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            Customer Phone
+                        </td>
+                        <td class="cellPaddingTd fontSize10">
+                            BillingEmailAddress 
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Item
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Class
+                        </th>
+                        <th class="centerAlign grayCellBg cellPaddingTd fontSize10">
+                            Vendor Code
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Origin
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Units
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Quantity
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Rate
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Line Total
+                        </th>
+                    </tr>
+                    <apex:variable var="itemNum" value="{!1}"/> 
+                    <apex:repeat value="{!record.OrderItems}" var="oi">   
+                        <tr>
+                            <td class="cellPaddingTd fontSize10">
+                                {!oi.Product_Code__c}
+                            </td>
+                            <td class="cellPaddingTd fontSize10">
+                                {!oi.Product_Name__c}
+                            </td>
+                            <td class="centerAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, 0}">
+                                    <apex:param value="{!oi.Quantity}" />
+                                </apex:outputText>
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, currency}">
+                                    <apex:param value="{!oi.ListPrice}"/>
+                                </apex:outputText>                                   
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, currency}">
+                                    <apex:param value="{!oi.TotalPrice}"/>
+                                </apex:outputText>
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                
+                            </td>
+                            <td class="cellPaddingTd fontSize10">
+                                
+                            </td>
+                        </tr>
+                        <apex:variable var="itemNum" value="{!itemNum + 1}"/> 
+                    </apex:repeat>
+                </table>
+                <hr/>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <td class="tdHeaderWidth cellVerticalAlign">
+                           
+                        </td>
+                        <td class="tdHeaderWidth rightAlign">
+                            <table class="tableLayoutFixed">
+                                <tr>
+                                    <th class="grayCellBg cellPaddingTd">
+                                        Total
+                                    </th>
+                                    <td class="grayCellBg cellPaddingTd">
+                                        $115.25
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
+                <br/>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <td style="width:30%;"><b>Authorized Purchasing Agent&nbsp;&nbsp;</b></td>
+                        <td><hr style="margin-top:4%; color: black;"/></td>
+                    </tr>
+                    <tr>
+                        <td style="text-align:center;" colspan="2">
+                            <span>ORDERS OVER $10,000 WITHOUT AUTHORIZED SIGNATURE ARE NOT VALID</span>
+                        </td>
+                    </tr>
+                </table>
+                <div>
+           			 <apex:image height="30" value="https://bwipjs-api.metafloor.com/?bcid=code128&amp;text={!record.OrderNumber}&amp;scaleX=2&amp;scaleY=0.5&amp;rotate=N&amp;includetext&amp;backgroundcolor=ffffff"/>
+       			 </div>
+            </div>
+            
+        </apex:repeat>
+        
+    </body>
+</apex:page>

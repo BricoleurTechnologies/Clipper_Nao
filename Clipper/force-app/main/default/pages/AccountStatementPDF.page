@@ -1,0 +1,309 @@
+<apex:page controller="AccStatementPdfController" renderAs="pdf" showHeader="false" applyBodyTag="false">
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <style>
+            @page {
+                margin-bottom: 35mm;
+                @bottom-center {
+                    font-family: arial, sans-serif;
+                    font-size: 12px;
+                    content: "Page " counter(page) " of " counter(pages);
+                }
+            }
+            body {
+                font-family: arial, sans-serif;
+                font-size: 12px;
+                margin: 0;
+                padding: 0;
+            }
+            table {
+                font-family: arial, sans-serif;
+                border-collapse: collapse;
+                width: 100%;
+                page-break-inside: auto; /* Avoid page breaks inside tables */
+            }
+            th, td {
+                border-collapse: collapse;
+                padding: 5px;
+            }
+            .leftAlign {
+                text-align: left;
+                padding-left: 5px;
+            }
+            .rightAlign {
+                text-align: right;
+                padding-right: 5px;
+            }
+            .centerAlign {
+                text-align: center;
+            }
+            .border {
+                border: 1px solid;
+            }
+            .tableLayoutFixed {
+                table-layout: fixed;
+            }
+            .tdHeaderWidth {
+                width: 50%;
+            }
+            .removeBreak {
+                display: inline;
+            }
+            .tableMarginTop {
+                margin-top: 1.5%;
+            }
+            .cellVerticalAlign {
+                vertical-align: top;
+            }
+            .cellPaddingTd {
+                padding: 8px;
+                vertical-align: center;
+            }
+            .grayCellBg {
+                background-color: #e8e4e4;
+            }
+            .fontSize10 {
+                font-size: 10px;
+            }
+            hr {
+                box-shadow: none;
+                border: none;
+                height: 1px; 
+                background-color: #ccc;
+            }
+            .tdWrap {
+                word-break: break-word; 
+                word-wrap: break-word; 
+                white-space: normal;
+            }
+            .broken-line {
+                border-top: 2.5px dashed #ccc;
+                width: 100%;
+                margin: 10px 0 0 0;
+            }
+        </style>
+    </head>
+    <body>
+        <apex:variable var="pageNum" value="{!0}"/>
+        <apex:repeat value="{!recordList}" var="record">
+            <div class="{!if(pageNum == 0,'page-break-avoid','page-break')}">
+                <table class="tableLayoutFixed">
+                    <tr>
+                        <td class="tdHeaderWidth leftAlign">
+                            <table>
+                                <tr>
+                                    <td>
+                                        <br/>
+                                        <!--<apex:image value="{!URLFOR($Resource.DocGen_SalesOrderPDF)}"/>-->
+                                        <apex:image value="{!logoUrl}" height="80" width="150"/>
+                                    </td>
+                                    <td style="padding-left:7px;" class="fontSize10">
+                                        Hanna Instruments Pty Ltd.<br/>
+                                        18 Fiveways Boulevarde<br/>
+                                        Keysborough VIC 3173<br/>
+                                        ABN: 97 003 417 990
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                        <td class="tdHeaderWidth rightAlign">
+                            <h1>Account Statement</h1>
+                            <apex:outputText value="{0, date, d MMM yyyy}">
+                                <apex:param value="{!today()}" />
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th class="cellVerticalAlign" style="width:30%;">
+                            <b>Bill To</b><br/>
+                        </th>
+                        <th class="cellVerticalAlign grayCellBg" style="width:40%;">
+                            <span style="font-size:20px;"><b>TOTAL</b></span><br/>
+                        </th>
+                    </tr>
+                    <tr>
+                        <td>
+                            {!record.Name}<br/>
+                            Attn: TBD <br/>
+                            {!record.BillingStreet}<br/>
+                            {!record.BillingCity} {!record.BillingState} {!record.BillingPostalCode}<br/>
+                            {!record.BillingCountry}
+                        </td>
+                        <td class="grayCellBg rightAlign" style="font-size:25px;">
+                            <apex:outputText value="{0, number, currency}">
+                                <apex:param value="{!record.Account_Balance__c}"/>
+                            </apex:outputText>
+                        </td>
+                    </tr>
+                </table>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Date
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Invoice
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Reference
+                        </th>
+                        <th class="grayCellBg cellPaddingTd fontSize10">
+                            Due Date
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Invoice Amount
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Payments
+                        </th>
+                        <th class="grayCellBg cellPaddingTd rightAlign fontSize10">
+                            Balance
+                        </th>
+                    </tr>
+                    <!--<apex:variable var="itemNum" value="{!1}"/>--> 
+                    <apex:repeat value="{!invoiceList}" var="inv">   
+                        <tr>
+                            <td class="cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, date, d MMM yyyy}">
+                                    <apex:param value="{!inv.Invoice_Date_bric__c}" />
+                                </apex:outputText>
+                            </td>
+                            <td class="cellPaddingTd fontSize10">
+                                {!inv.Name}
+                            </td>
+                            <td class="cellPaddingTd fontSize10">
+                                {!inv.PO_Number_bric__c}                                   
+                            </td>
+                            <td class="cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, date, d MMM yyyy}">
+                                    <apex:param value="{!inv.Invoice_Due_Date__c}" />
+                                </apex:outputText>
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, currency}">
+                                    <apex:param value="{!inv.Invoice_Amount_Inc_GST__c}"/>
+                                </apex:outputText>
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, currency}">
+                                    <apex:param value="{!inv.Amount_Paid__c}"/>
+                                </apex:outputText>
+                            </td>
+                            <td class="rightAlign cellPaddingTd fontSize10">
+                                <apex:outputText value="{0, number, currency}">
+                                    <apex:param value="{!inv.Amount_Outstanding__c}"/>
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                        <!--<apex:variable var="itemNum" value="{!itemNum + 1}"/>--> 
+                    </apex:repeat>
+                </table>
+                <hr/>
+                <table class="tableLayoutFixed tableMarginTop">
+                    <tr>
+                        <td class="tdHeaderWidth rightAlign">
+                            <h3 style="display:inline;">BALANCE DUE AUD &nbsp;&nbsp;&nbsp; 
+                            <apex:outputText value="{0, number, currency}">
+                                <apex:param value="{!record.Account_Balance__c}"/>
+                            </apex:outputText></h3>
+                           <!--<table class="tableLayoutFixed">
+                                <tr>
+                                    <th class="cellPaddingTd">
+                                        Subtotal
+                                    </th>
+                                    <td class="cellPaddingTd">
+                                        {!record.TotalAmount}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="cellPaddingTd">
+                                        GST
+                                    </th>
+                                    <td class="cellPaddingTd">
+                                        {!record.GST_bric__c}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <th class="grayCellBg cellPaddingTd">
+                                        Total
+                                    </th>
+                                    <td class="grayCellBg cellPaddingTd">
+                                        {!record.Amount_Inc_GST__c}
+                                    </td>
+                                </tr>
+                            </table>-->
+                        </td>
+                    </tr>
+                </table>
+                <div style="font-size:10px; margin: 10px 0;">
+                    Hanna Instruments<br/>
+                    BSB: 083-337<br/>
+                    Account Number: 517248113<br/>
+                    National Australia Bank<br/>
+                    ABN: 97 003 417 990
+                </div>
+                <div>
+                     <!--<apex:image height="30" value="https://bwipjs-api.metafloor.com/?bcid=code128&amp;text={!record.OrderNumber}&amp;scaleX=2&amp;scaleY=0.5&amp;rotate=N&amp;includetext&amp;backgroundcolor=ffffff"/>-->
+                     <div class="broken-line"></div>
+                     <table class="tableLayoutFixed">
+                        <tr>
+                            <td>
+                                <h1 style="display:inline;">Hanna Instruments Pty Ltd</h1>
+                            </td>
+                            <td style="text-align: right;display:inline;">
+                                <h1>Remittance Slip</h1>
+                            </td>
+                        </tr>
+                     </table>
+                     <table class="tableLayoutFixed">
+                        <tr>
+                            <th class="grayCellBg fontSize10">
+                                Company Name
+                            </th>
+                            <th class="grayCellBg fontSize10">
+                                Transaction Date
+                            </th>
+                            <th class="grayCellBg fontSize10">
+                                Amount Due
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="fontSize10">
+                                {!record.Name}
+                            </td>
+                            <td class="fontSize10">
+                                <apex:outputText value="{0, date, d MMM yyyy}">
+                                    <apex:param value="{!today()}" />
+                                </apex:outputText>
+                            </td>
+                            <td class="fontSize10">
+                                <apex:outputText value="{0, number, currency}">
+                                    <apex:param value="{!record.Account_Balance__c}"/>
+                                </apex:outputText>
+                            </td>
+                        </tr>
+                     </table>
+                     <table class="tableLayoutFixed">
+                        <tr>
+                            <th class="grayCellBg fontSize10">
+                                Return Payment to:
+                            </th>
+                        </tr>
+                        <tr>
+                            <td class="fontSize10">
+                                Hanna Instruments Pty Ltd<br/>
+                                18 Fiveways Boulevarde<br/>
+                                Keysborough VIC 3173<br/>
+                                Australia
+                            </td>
+                        </tr>
+                     </table>
+                 </div>
+            </div>
+            
+        </apex:repeat>
+        
+    </body>
+</apex:page>

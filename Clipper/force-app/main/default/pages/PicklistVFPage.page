@@ -1,0 +1,147 @@
+<apex:page id="mainPage" standardController="Order" recordSetVar="o" extensions="PicklistPDFController" showHeader="false" applyBodyTag="false" >
+    <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1"/>
+        <style >
+            body {
+            font-family: arial, sans-serif;
+            }
+            table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+            }
+            
+            .header {
+            background-color: #BDD7EE;
+            color: black;    
+            text-align: center;        
+            }
+            
+            td, th {
+            border: 1px solid;
+            font-size: 12px;
+            }
+            
+            .leftAlign{            
+                text-align: left;
+                padding-left: 5px;
+            }
+            
+            .rightAlign{            
+                text-align: right;
+                padding-right: 5px;
+            }
+            
+            
+        </style>
+        
+    </head>
+    
+    <script>      
+    window.onload = function() { 
+        window.print();
+        
+    }
+    </script>
+    
+    <body>
+        <div>
+            
+            <apex:repeat value="{!orderRec}" var="ordRec">
+                <div style="{!IF(ordRec!=orderRec[0],'page-break-before:always;','')}">
+                    <apex:image url="{!$Resource.CompanyLogo}" width="25%" height="25%" style="float: right;"/>            
+                </div>
+                <br/>
+                
+                
+                <div >
+                    <div >
+                        <br/>
+                        <div style="font-weight: bold; font-size: 20px;">{!ordRec.Account.Name}</div><br/>
+                        
+                        <div style="font-weight: bold; font-size: 12px;">
+                            Picking Slip
+                        </div> 
+                        <br/>
+                        <div style="font-weight: bold; font-size: 12px;">
+                            Order Number: {!ordRec.OrderNumber}
+                        </div> 
+                        <div style="font-size: 12px;">
+                            <strong>Date Generated:</strong>
+                            <apex:outputText value="{0, date, MMMM d','  yyyy}">
+                                <apex:param value="{!NOW()}" />
+                            </apex:outputText>
+                        </div> 
+                        <div style="font-size: 12px;" >
+                            <p><strong>Account: </strong>{!ordRec.Account.Name}</p>
+                        </div> 
+                        <div style="font-size: 12px;">
+                            <p><strong>Order Client Contact: </strong>{!ordRec.BillToContact.Name}</p> 
+                        </div> 
+                        <!--div style="font-size: 12px;">
+                            <p><strong>Order Contact Phone: </strong> {!ordRec.s_c__Contact_Phone__c} </p>
+                        </div> 
+                        <div style="font-size: 12px;">
+                            <p><strong>Order Contact Email: </strong> {!ordRec.s_c__Contact_Email__c}</p>
+                        </div--> 
+                        
+                        <div style="font-size: 12px;">
+                            <strong>Order Shipping Address:</strong><br/>
+                            {!ordRec.ShippingStreet} {!ordRec.ShippingCity} {!ordRec.ShippingState} {!ordRec.ShippingPostalCode} {!ordRec.ShippingCountry}
+                            <br/>
+                            <strong>Order Billing Address:</strong><br/>
+                            {!ordRec.BillingStreet} {!ordRec.BillingCity} {!ordRec.BillingState} {!ordRec.BillingPostalCode} {!ordRec.BillingCountry}
+                        </div>
+                        
+                        <div style="font-size: 12px;">
+                            <p> <strong>Warehouse: </strong>{!ordRec.Inventory_Location__r.Name}</p>
+                        </div> 
+                        <br/>
+                    </div>
+                    <table border="1">
+                        <tr >
+                            <th class="header"><p>Product Code</p></th>
+                            <th class="header"><p>Product Name</p></th>
+                            <th class="header"><p>Loc'n</p></th>
+                            <th class="header"><p>UOM</p></th>
+                            <th class="header"><p>Order Qty</p></th>
+                            <th class="header"><p>Picked Qty</p></th>
+                            <th class="header"><p>Notes</p></th>
+                        </tr>
+                        <apex:repeat value="{!ordRec.OrderItems}" var="ordItems">
+                            <tr>
+                                <td class="leftAlign">
+                                    <apex:outputText value="{!ordItems.Product2.ProductCode}" rendered="{!ordItems.Product2.ProductCode != null}"/>
+                                    
+                                </td>
+                                <td class="leftAlign">
+                                    <apex:outputText value="{!ordItems.Product2.Name}" rendered="{!ordItems.Product2.Name != null}"/>
+                                </td>
+                                <td class="leftAlign">
+                                    <apex:outputText value="{!ordItems.Warehouse_Location__c}" rendered="{!ordItems.Warehouse_Location__c != null}"/>
+                                </td>  
+                                <td class="leftAlign"> 
+                                    <apex:outputText value="{!ordItems.Product2.QuantityUnitOfMeasure}" rendered="{!ordItems.Product2.QuantityUnitOfMeasure != null}"/>
+                                    
+                                </td>
+                                <td class="rightAlign"> 
+                                    <apex:outputText value="{!ordItems.Quantity}" rendered="{!ordItems.Quantity != null}"/>                                    
+                                    
+                                </td>
+                                <td class="rightAlign"> 
+                                </td>
+                                <td class="rightAlign"> 
+                                </td>
+                            </tr>
+                        </apex:repeat>                        
+                    </table>
+                    
+                    
+                </div>
+            </apex:repeat>
+            
+        </div>
+        
+        
+    </body>
+</apex:page>

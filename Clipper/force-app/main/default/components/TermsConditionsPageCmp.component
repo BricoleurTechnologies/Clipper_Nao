@@ -1,0 +1,112 @@
+<apex:component >
+    <html>
+        <head>
+            <title>Terms &amp; Conditions</title>
+        </head>
+        <body>
+            <div>
+                <h2 style="color:#4bbfa7;">CleanMade Australia Fair Go Policy</h2>
+                <p style="color:red;">By booking a service you (the Customer) agree to be bound by the terms and conditions outlined below by Cleanmade Australia (Us/the Company/ Franchisor). </p>
+                <div>
+                    <p>
+                        The purpose of our fair go policy is to ensure that our franchisees can provide services to their customers, but not be used in a manner that is considered 'unreasonable' and or 'unacceptable'. Anything not specifically mentioned in your quote is not included and no assumptions are accepted. Our standard work inclusions are clearly detailed on your quote for complete works transparency.
+                    </p>
+                    <p>
+                        <strong>Franchise Allocation.</strong>
+                    </p>
+                    <p>
+                        By accepting this quote and booking the service, the Customer further agrees to have engaged the franchise chosen by us (Company) for the provision of the services and agrees to be liable to that chosen franchise for the fees quoted.
+                    </p>
+                    <p>
+                        <strong>Estimating / Quoting / Invoicing.</strong>
+                    </p>
+                    <p>
+                        When a service is booked in over the phone or via email/SMS by the sales team, the quote is based entirely on the information provided by the Customer. We require the provided information to be as thorough and detailed as possible so that we may provide to the best of our ability, the most accurate quote possible. Any missed or misinformation may lead to extra charges by the Franchisee on site. All of our calls are recorded for training and quality assurance purposes.<br/>
+                        The Fair Go Policy is to ensure that any quote provided over the phone is only an indicative price and is subject to change (if applicable) upon a site inspection by the Franchisee. Any extras that the Franchisee believes requires further discussion and quoting, will be advised to the Customer prior to commencement of any works and only by mutual agreement. If the extra work is required due to missed or misinformation and the Customer wishes to not go ahead with the services, a call out fee of $100 will apply and is payable on the day.<br/>
+                        The Customer agrees to pay the Franchise in full immediately upon completion of the services. 
+                    </p>
+                    <p>
+                        <strong>Cancellations.</strong>
+                    </p>
+                    <p>
+                        Any cancellations made by the customer 24 hours prior or less to a service booking will incur a $100 cancellation fee. Any cancellation must be made during business hours, by phone whilst speaking to a consultant and or in writing or the cancellation fee will apply.
+                    </p>
+                    <p>
+                        <strong>Our Responsibility.</strong>
+                    </p>
+                    <p>
+                        To provide services that adhere to our Company Terms &amp; Condition's, policies, and procedures. Ensure that the service provided meets the standard requirements in place by the Company's Training/ Licensing Program and work within and follow regulations specific to each service being provided.
+                    </p>
+                    <p>
+                        <strong>Your Responsibility.</strong>
+                    </p>
+                    <p>
+                        To provide us with correct information about the job and not downplay any specifics. If the job is not possible to undertake on that day due to incorrect estimate due to misinformation, we may cancel, rebook and or advise you prior to commencing about any additional charges.<br/>
+                        If the job is cancelled or rejected due to deliberate misinformation a call out fee of $100 is payable. If you are unsure of the scope of works required, a quote can be organised at the sole discretion of the Company a service call out fee of $150 may apply and will be payable on the day. You must also ensure that the jobsite does not pose a risk to our Franchisee and that all animals are always kept securely away. We do not take any responsibility for the safeguard of any pets and or children, please ensure all arrangements for their safety has been accounted for prior to our services commencing.
+                    </p>
+                    <p>
+                        <strong>Quality Assurance Checks.</strong>
+                    </p>
+                    <p>The Franchisee is required to take before &amp; after photos and provide reports (if applicable) to ensure works have met the relevant standards for the service provided. You will have access to these images by request. The Franchisee is trained on our policies and procedures. We have ongoing and extensive training to ensure compliance is met. Random site audits are also undertaken to ensure standards are being maintained.</p>
+                    <p>
+                        <strong>Non-Payment.</strong>
+                    </p>
+                    <p>
+                        The consumer agrees to accept the invoice/fee for works completed by the Franchisee. If the Customer refuses or fails to make payment for the goods or services provided by our Franchise, we will attempt to mediate the situation. The Customer agrees to indemnify the Franchise and will be liable for, all loss and damage, out-of-pocket expenses and all other reasonable expenses and disbursements incurred by the Franchisee in this matter, including but not limited to legal costs on a solicitor/own basis, search fees and debt collection costs (as if the debt had been collected) and any other contingent expenses incurred by the Franchise for the enforcement of any obligations the Franchise is at liberty to take against the Customer, for the recovery of moneys owing by the Customer to the Franchise.
+                    </p>
+                    <p>
+                        <strong>Unsatisfied with works?</strong>
+                    </p>
+                    <p>
+                        Contact the Franchisee directly or call our support line 1300 932 532 for assistance.<br/>
+                        We pride ourselves on customer service and will endeavour to remedy any issues in the best way possible, so all parties are satisfied by the outcome. <br/>
+                        Where applicable an inspection may be required, each case will be assessed on a case by case basis.<br/>
+                        <ul>
+                            <li>Re-attend free of charge</li>
+                            <li>Partial refund</li>
+                            <li>Full refund only if the job was not undertaken or the case allows</li>
+                            <li>Refuse as complaint is unreasonable (Following an investigation)</li>
+                        </ul>
+                    </p>
+                    <p>
+                        We try our best to resolve matters within 72 hours. We reserve the right to refuse unreasonable complaints of unsatisfactory works. If you undertake another provider to rectify the issue in the interim, this immediately removes us and our Franchisee from any responsibility as then it wouldn't be assessed accurately if it has been tampered with, we will not match prices nor cover this fee.
+                    </p>
+                    <p>
+                        <strong>Jurisdiction.</strong>
+                    </p>
+                    <p>
+                        Unless otherwise agreed in writing by us or the Franchisee, at our sole selection, the Courts of any State or Territory in Australia will have exclusive jurisdiction in relation to all matters whatsoever concerning these terms and conditions. The Customer irrevocably waives any objection to the venue selected by us or the Franchise in relation to any legal proceedings concerning these terms and conditions. The laws of the State or Territory chosen by us or the Franchisee for any such legal proceedings, will govern these terms and conditions.
+                    </p>
+                    <p>
+                        <strong>Unreasonable.</strong>
+                    </p>
+                    <p>
+                        We consider your use of the service unreasonable if you use it in a manner which is other than it was intended for. 
+                        Here are some examples of uses which we consider 'unreasonable'. This is not intended to be an exhaustive list:<br/>
+                        <ul>
+                            <li>Customer not willing to pay the minimum charge for works completed.</li>
+                            <li>Customer forgets appointment time/ date, access is not available and does not want to pay call out fee.</li>
+                            <li>Customer not willing to pay for extra services that were agreed upon prior to completion.</li>
+                            <li>Claims of damage to personal property when photographic evidence proving otherwise is presented.</li>
+                            <li>Customer not accepting that when a job is quoted for over the phone, it is an indicative price and subject to a site inspection before the quote is valid</li>
+                            <li>Customer does not want to pay cancellation fees.</li>
+                            <li>Customer not wanting to pay because their bond was not returned due to un-cleanable items</li>
+                            <li>Customer not willing to provide credit card details at the time of booking for services requiring a deposit.</li>
+                        </ul>
+                    </p>
+                    <p>
+                        <strong>Breaching the Fair Go Policy.</strong>
+                    </p>
+                    <p>
+                        If you breach any part of this Fair Go Policy we will, generally speaking, contact you and, if appropriate, we may suspend or cancel your service without notice to you.
+                    </p>
+                    <p style="font-size:11px;">
+                        <i>
+                            We solely reserve the right to change our Fair Go Policy without notice. Changes are updated on our website. This policy sets out the responsibilities when engaging our services, including if the service is unsatisfactory. This Fair Go Policy works in conjunction with our franchise services T&amp;Cs located on our website.
+                        </i>
+                    </p>
+                </div>
+            </div>
+        </body>
+    </html>
+</apex:component>
